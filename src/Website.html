@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>공유용</title>
+    <meta property="og:title" content="공유용">
+    <meta property="og:url" content="http://sharevtuber.kro.kr">
+    <meta property="og:description" content="天安門 天安门 法輪功 李洪志 Free Tibet 劉曉波">
+    <meta property="og:image" content="http://211.216.126.192:8800/sharevtuber/thumbnail3.png">
+</head>
+<body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" onresize="imageSizer();" onload="loadPage();" style = "text-align: center;">
+<img id = "twitImgPr" src = "" width="" height="" onclick="zoomToggle();" style="cursor:zoom-in;">
+<img id = "twitImgSec" src = "" width="" height="" onclick="zoomToggle();" style="cursor:zoom-in;">
+<img id = "nasImg" src = "" width="" height="" onclick="zoomToggle();" style="cursor:zoom-in;">
+<img id = "goYoutube" src = "" width="" height="" onclick="zoomToggle();" style="cursor:zoom-in;">
+<script>
+        let browserWidth;
+        let browserHeight;
+        let originalWidth;
+        let originalHeight;
+        let currentWidth;
+        let currentHeight;
+        let resolution;
+        let browserReso;
+        let zoomed = false;
+
+        setTimeout(function (){
+            if(currentWidth == 0 || currentHeight == 0) {
+                loadPage();
+            }
+        }, 1000);
+
+        function zoomToggle() {
+            if(zoomed == false) {
+                zoomed = true;
+            }
+            else {
+                zoomed = false;
+            }
+            mouseSetter();
+            imageSizer();
+        }
+
+        function mouseSetter() {
+            if(getParameterByName('twitterimg') != "") {
+                if(zoomed == false) {
+                    document.getElementById('twitImgPr').style = "cursor:zoom-in;";
+                }
+                else {
+                    document.getElementById('twitImgPr').style = "cursor:zoom-out;";
+                }
+            }
+
+            if(getParameterByName('twitterimg1') != "") {
+                if(zoomed == false) {
+                    document.getElementById('twitImgSec').style = "cursor:zoom-in;";
+                }
+                else {
+                    document.getElementById('twitImgSec').style = "cursor:zoom-out;";
+                }
+            }
+
+            if(getParameterByName('nas') != "") {
+                if(zoomed == false) {
+                    document.getElementById('nasImg').style = "cursor:zoom-in;";
+                }
+                else {
+                    document.getElementById('nasImg').style = "cursor:zoom-out;";
+                }
+            }
+        }
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            let regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        function getFromTwitterPr() {
+            let img_src = "";
+            let ifThereAreTwo = getParameterByName('twitterimg').split('?');
+            img_src = "https://pbs.twimg.com/media/" + ifThereAreTwo[0] + "?format=jpg&name=large";
+            return img_src;
+        }
+
+        function getFromTwitterSec() {
+            let img_src = "";
+            img_src = "https://pbs.twimg.com/media/" + getParameterByName('twitterimg1') + "?format=jpg&name=large";
+            return img_src;
+        }
+
+        function getFromNas() {
+            let img_src = "";
+            img_src = "http://211.216.126.192:8800/sharevtuber/" + getParameterByName('nas');
+            return img_src;
+        }
+
+        function redirectionYoutube() {
+            let url_src = "";
+            if(getParameterByName('url') != "") {
+                url_src = "https://youtu.be/" + getParameterByName('url');
+            }
+            else {
+                url_src = "https://youtu.be/" + getParameterByName('youtube');
+            }
+            return url_src;
+        }
+        function redirectionTwitter() {
+            let url_src = "";
+            url_src = "https://twitter.com/" + getParameterByName('twit');
+            return url_src;
+        }
+        function redirectionPixiv() {
+            let url_src = "";
+            url_src = "https://www.pixiv.net/artworks/" + getParameterByName('pixiv');
+            return url_src;
+        }
+
+        if(getParameterByName('youtube') != "" || getParameterByName('url') != "") {
+            window.location.href = redirectionYoutube();
+        }
+        if(getParameterByName('twit') != "") {
+            window.location.href = redirectionTwitter();
+        }
+        if(getParameterByName('pixiv') != "") {
+            window.location.href = redirectionPixiv();
+        }
+
+        function setImgSize(obj) {
+            browserWidth = window.innerWidth;
+            browserHeight = window.innerHeight;
+            originalWidth = document.getElementById(obj).naturalWidth;
+            originalHeight = document.getElementById(obj).naturalHeight;
+            currentWidth = document.getElementById(obj).width;
+            currentHeight = document.getElementById(obj).height;
+            resolution = originalWidth / originalHeight;
+            browserReso = browserWidth / browserHeight;
+
+            if(browserWidth > browserHeight) {
+                if(((originalWidth >= originalHeight && resolution < browserReso) || originalWidth < originalHeight) && zoomed == false) {
+                    document.getElementById(obj).height = browserHeight;
+                    document.getElementById(obj).width = browserHeight * resolution;
+                }
+                else {
+                    document.getElementById(obj).height = browserWidth / resolution;
+                    document.getElementById(obj).width = browserWidth;
+                }
+            }
+            else {
+                if(((originalHeight >= originalWidth && resolution > browserReso) || originalWidth > originalHeight) && zoomed == false) {
+                    document.getElementById(obj).height = browserWidth / resolution;
+                    document.getElementById(obj).width = browserWidth;
+                }
+                else if(resolution < browserReso && zoomed == true) {
+                    document.getElementById(obj).height = browserWidth / resolution;
+                    document.getElementById(obj).width = browserWidth;
+                }
+                else {
+                    document.getElementById(obj).height = browserHeight;
+                    document.getElementById(obj).width = browserHeight * resolution;
+                }
+            }
+        }
+
+        function imageSizer() {
+            if(getParameterByName('twitterimg') != "") {
+                setImgSize('twitImgPr');
+            }
+
+            if(getParameterByName('twitterimg1') != "") {
+                setImgSize('twitImgSec');
+            }
+
+            if(getParameterByName('nas') != "") {
+                setImgSize('nasImg');
+            }
+        }
+
+        function loadPage() {
+            if(getParameterByName('twitterimg') != "") {
+                document.getElementById('twitImgPr').src = getFromTwitterPr();
+            }
+
+            if(getParameterByName('twitterimg1') != "") {
+                document.getElementById('twitImgSec').src = getFromTwitterSec();
+            }
+
+            if(getParameterByName('nas') != "") {
+                document.getElementById('nasImg').src = getFromNas();
+            }
+
+            imageSizer();
+        }
+    </script>
+</body>
+</html>
