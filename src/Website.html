@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <title>공유용</title>
     <meta property="og:title" content="공유용">
-    <meta property="og:url" content="http://sharevtuber.kro.kr">
     <meta property="og:description" content="공유용">
     <meta property="og:image" content="http://211.216.126.192:8800/sharevtuber/thumbnail3.png">
 </head>
@@ -115,6 +115,11 @@
             url_src = "https://www.pixiv.net/artworks/" + getParameterByName('pixiv');
             return url_src;
         }
+        function redirectionShare() {
+            let url_src = "";
+            url_src = "http://xn--2v5bnhw43b.xn--hk3b17f.xn--3e0b707e:8181/tos/index.php?share/fileDownload&user=Dot.&sid=" + getParameterByName('nasShare');
+            return url_src;
+        }
 
         if(getParameterByName('youtube') != "" || getParameterByName('url') != "") {
             window.location.href = redirectionYoutube();
@@ -124,6 +129,9 @@
         }
         if(getParameterByName('pixiv') != "") {
             window.location.href = redirectionPixiv();
+        }
+        if(getParameterByName('nasShare') != "") {
+            window.location.href = redirectionShare();
         }
 
         function setImgSize(obj) {
